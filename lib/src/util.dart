@@ -23,6 +23,11 @@ Future<Map<String, dynamic>> fetchUser(
 }) async {
   final doc = await instance.collection(usersCollectionName).doc(userId).get();
 
+  if (!doc.exists) {
+    // If the user does not exist, throw an error.
+    throw Exception('User with id $userId does not exist.');
+  }
+
   final data = doc.data()!;
 
   data['createdAt'] = data['createdAt']?.millisecondsSinceEpoch;
